@@ -1,22 +1,29 @@
+import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-
-// interface
-import { Strategy } from 'passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { AuthService } from './auth.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UsersService) {
-    super({
-      usernameField: 'email',
-    });
+  constructor(private authService: AuthService) {
+    super({ usernameField: 'email' });
   }
-  //   Logic xác thực nằm ở đây
-  //   Thông tin xác thực sẽ được tự động thêm vào request
-  async validate(email: string, password: string) {
-    const user = await this.userService.login(email, password);
-    if (!user) throw new UnauthorizedException('Login failed!');
-    return user;
+
+  async validate(email: string, password: string): Promise<any> {
+    const user = await this.authService.validateUser(email, password);
+    if (!user) {
+      throw new UnauthorizedException('');
+    }
+    const hashpass = user._doc.password;
+    const isMatch = await bcrypt.compare(password, hashpass);
+
+    if (!isMatch) throw new ForbiddenException('Wrong password');
+    const { password: pass, ...result } = user._doc;
+    return result;
   }
 }

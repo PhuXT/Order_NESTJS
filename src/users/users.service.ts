@@ -14,6 +14,10 @@ export class UsersService {
     const { password, ...inforUser } = user['_doc'];
     return user['_doc'];
   }
+  // FIND USER
+  async findByEmail(email: string) {
+    return this.userRepository.find(email);
+  }
 
   // REGISTER
   async create(userCreateDto: UserCreateDto): Promise<unknown> {
