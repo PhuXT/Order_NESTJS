@@ -29,8 +29,6 @@ export class UsersService {
     userCreateDto.password = hashPassword;
 
     const newUser = await this.userRepository.create(userCreateDto);
-    const { _id, email } = newUser['_doc'];
-    const payload = { id: _id, email };
     return newUser;
   }
 }

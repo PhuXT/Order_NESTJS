@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class UserCreateDto {
+  _id: string;
   @IsNotEmpty()
   readonly name: string;
   @IsNotEmpty()

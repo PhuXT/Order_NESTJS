@@ -11,9 +11,13 @@ import { UserCreateDto } from './dto/UserCreate.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
   // @Post('/login')
   // async login(@Body() userLogin: UserLoginDto): Promise<unknown> {
   //   const userInfor = await this.userService.login(
@@ -26,7 +30,11 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Request() req) {
+    // const access_token = this.authService.login(req.user);
+
     return req.user;
+
+    // return req.user;
   }
 
   @Post('/register')

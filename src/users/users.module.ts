@@ -7,6 +7,7 @@ import { User, UserSchema } from './user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 // import { LocalStrategy } from 'src/auth/local.strategy';
 @Module({
@@ -15,7 +16,13 @@ import { AuthService } from 'src/auth/auth.service';
     PassportModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserRepository, LocalAuthGuard],
+  providers: [
+    UsersService,
+    UserRepository,
+    LocalAuthGuard,
+    AuthService,
+    JwtService,
+  ],
   exports: [UsersService, UserRepository],
 })
 export class UsersModule {}
