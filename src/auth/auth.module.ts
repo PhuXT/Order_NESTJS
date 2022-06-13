@@ -20,10 +20,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      // secret: `${process.env.SECRET_KEY}`,
-      secret: 'abc',
-      // privateKey: 'bac',
-      signOptions: { expiresIn: '60s' },
+      secret: `${process.env.SECRET_KEY}`,
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   providers: [

@@ -14,18 +14,6 @@ import * as bcrypt from 'bcrypt';
 export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  // LOGIN
-  async logIn(email: string, password: string): Promise<User> {
-    const user = await this.userModel.findOne({ email });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      throw new ForbiddenException();
-    }
-    return Promise.resolve(user);
-  }
   // find
   async find(email: string): Promise<User> {
     return await this.userModel.findOne({ email });
