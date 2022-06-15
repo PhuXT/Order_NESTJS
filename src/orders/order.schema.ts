@@ -1,10 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Date } from 'mongoose';
 
 import { OrderStatus } from './orders.enum';
 
 export type OrderDocument = Order & Document;
 type item = {
   productID: string;
+  productName: string;
+  productPrice: number;
   quantity: number;
 };
 
@@ -22,11 +25,14 @@ export class Order {
   @Prop({ required: true })
   phone: string;
 
-  @Prop({ required: true })
+  @Prop({ default: OrderStatus.CREATED, required: true })
   orderStatus: OrderStatus;
 
   @Prop({ default: 0 })
   totalPrice: number;
+
+  @Prop()
+  createdAt: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

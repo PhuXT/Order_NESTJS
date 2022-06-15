@@ -25,6 +25,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     if (!isMatch) throw new ForbiddenException('Wrong password');
     const { password: pass, ...result } = user._doc;
+
     return result;
   }
 }

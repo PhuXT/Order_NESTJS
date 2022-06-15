@@ -12,11 +12,13 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Order, OrderSchema } from 'src/orders/order.schema';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
     UsersModule,
     PassportModule,
     JwtModule.register({
@@ -29,7 +31,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UsersService,
     UserRepository,
     LocalStrategy,
-    // JwtStrategy,
+    JwtStrategy,
   ],
   exports: [AuthService],
 })

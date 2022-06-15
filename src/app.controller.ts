@@ -11,16 +11,9 @@ export class AppController {
   ) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('/login')
+  @Post('users/login')
   async login(@Request() req) {
-    const access_token = this.authService.login(req.user);
-
-    return access_token;
-
-    // return req.user;
-  }
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+    const access_token = await this.authService.login(req.user);
+    return { access_token, userInfor: req.user };
   }
 }

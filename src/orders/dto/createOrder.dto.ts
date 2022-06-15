@@ -1,20 +1,28 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { OrderStatus } from './orders.enum';
+import { OrderStatus } from '../orders.enum';
 
 type item = {
   productID: string;
+  productName: string;
+  productPrice: number;
   quantity: number;
 };
 export class OrderCreateDto {
+  @ApiProperty({
+    type: String,
+  })
   id: string;
-  @IsNotEmpty()
-  userOrderID: string;
+
+  @ApiProperty()
+  // @IsNotEmpty()
+  // userOrderID: string;
   @IsNotEmpty()
   products: item[];
   @IsNotEmpty()
   address: string;
   @IsNotEmpty()
   phone: string;
-  orderStatus: OrderStatus;
+  // orderStatus: OrderStatus;
   totalPrice: number;
 }

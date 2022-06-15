@@ -25,4 +25,9 @@ export class UsersService {
     const newUser = await this.userRepository.create(userCreateDto);
     return newUser;
   }
+
+  // Get Orders
+  async getOrders(userID: string) {
+    return await this.userRepository.getOrders(userID);
+  }
 }
