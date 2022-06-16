@@ -17,7 +17,7 @@ export class OrderRepository {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
   // CREATE
-  async create(userID: string, orderCreateDto: OrderCreateDto): Promise<Order> {
+  async create(userID: string, orderCreateDto: OrderCreateDto) {
     const user = await this.userModel.findOne({ _id: userID });
     if (!user) throw new ForbiddenException('User not found');
 
@@ -26,6 +26,7 @@ export class OrderRepository {
 
     // Save order id to userTable
     const orderID = newOrder._id.toString();
+    // const orderID = newOrder._id;
     await this.userModel.updateOne(
       { _id: userID },
       { $push: { orderIDS: orderID } },
@@ -33,8 +34,8 @@ export class OrderRepository {
     return newOrder.save();
   }
 
-  // CANCEL ORDER
-  async update(userID: string, orderID: string) {
+  // UPDATE STATUS
+  async update(userID: string, orderID: string, orderStatus: OrderStatus) {
     const user = await this.userModel.findOne({ _id: userID });
     if (!user.orderIDS.includes(orderID)) {
       throw new ForbiddenException('You can only cancel your orders');
@@ -46,8 +47,18 @@ export class OrderRepository {
     }
     return await this.orderModel.findByIdAndUpdate(
       { _id: orderID },
-      { $set: { orderStatus: OrderStatus.CANCELED } },
+      { $set: { orderStatus: orderStatus } },
       { new: true },
     );
+  }
+
+  // get ORDER
+  async getOrder(userID: string, orderID: string): Promise<Order> {
+    const user = await this.userModel.findOne({ _id: userID });
+    if (!user.orderIDS.includes(orderID)) {
+      throw new ForbiddenException('You can only get your orders');
+    }
+    const order = await this.orderModel.findOne({ _id: orderID });
+    return order;
   }
 }

@@ -7,7 +7,9 @@ import {
   Body,
   Patch,
   Param,
+  Inject,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { OrderCreateDto } from './dto/createOrder.dto';
@@ -31,4 +33,19 @@ export class OrdersController {
   async cancelOrder(@Request() req, @Param() params) {
     return await this.orderService.cancelOrder(req.user.userId, params.orderID);
   }
+
+  //[GET] API/V1/ORDERS/:ORDERID
+  @UseGuards(JwtAuthGuard)
+  @Get(':orderID')
+  async getDetailOrder(@Request() req, @Param() params) {
+    return await this.orderService.getOrder(req.user.userId, params.orderID);
+  }
+  // payment
+  // @Get()
+  // async test() {
+  //   const data = await this.client.send('paymentStatus', 'haha');
+  //   console.log(await data.toPromise());
+
+  //   return 'haha';
+  // }
 }

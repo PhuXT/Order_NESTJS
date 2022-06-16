@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Date } from 'mongoose';
+import mongoose, { Date } from 'mongoose';
 
 import { OrderStatus } from './orders.enum';
 

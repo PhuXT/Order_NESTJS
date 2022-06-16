@@ -1,6 +1,6 @@
 export enum OrderStatus {
-  CREATED = ' created',
-  CONFIRMED = 'confirmed',
-  DELIVERED = 'delivered',
-  CANCELED = 'canceled',
+  CREATED = 'CREATED',
+  CONFIRMED = 'CONFIRMED',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
 }
